@@ -3,6 +3,7 @@
 ssize_t mygetline(int fd, char* buff, size_t bytes){
     int handle = read(fd, buff, bytes); 
 
+    /* error occurred or EOF reached */
     if(handle == -1) return -1; 
     if(handle == 0) return 0; 
     
