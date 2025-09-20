@@ -11,7 +11,7 @@
 int main(int argc, char* argv[]){
     while(1){
         char* prompt = "\033[33mshelldelporcodio> \033[0m";
-        write(1, prompt, strlen(prompt));
+        write(STDOUT_FILENO, prompt, strlen(prompt));
 
         int new_pid = fork();
 
@@ -40,9 +40,10 @@ int main(int argc, char* argv[]){
             print_error(new_argv[0]);
             print_error(" is not an executable!\n");
             exit(1);
+            /* TODO: understanding if it makes sense to use _exit*/
         }
         else{
-            /* TOREMOVE */
+            /* TODO: remove this section */
             waitpid(new_pid, NULL, 0);
             printf("\033[32m\nThis is the message from the parent process: pid = %d, new pid = %d\n\033[0m", getpid(), new_pid);
             continue;
