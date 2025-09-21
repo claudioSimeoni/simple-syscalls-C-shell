@@ -25,3 +25,14 @@ void change_error_stream(char* new_stream, int append){
     dup2(new_fd, STDERR_FILENO); 
     close(new_fd);
 }
+
+/* these are used by the piping module */
+void change_input_stream_fd(int new_fd){
+    dup2(new_fd, STDIN_FILENO); 
+    close(new_fd);
+}
+
+void change_output_stream_fd(int new_fd){
+    dup2(new_fd, STDOUT_FILENO); 
+    close(new_fd);
+}

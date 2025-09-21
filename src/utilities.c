@@ -31,3 +31,7 @@ void print_error(char* err){
     write(2, err, strlen(err)); 
     write(2, post, strlen(post)); 
 }
+
+void run_executable(char* argv[]){
+    
+}

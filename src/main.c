@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
-#include <stdlib.h>
+#include <stdlib.h> // included for exit
 #include <sys/wait.h>
 
 #include "../include/utilities.h"
@@ -16,20 +16,22 @@ int main(int argc, char* argv[]){
         int new_pid = fork();
 
         if(new_pid < 0){
-            print_error("An error occurred during the creation of a new process!"); 
+            print_error("An error occurred during the creation of a new process!\n"); 
         }
         else if(new_pid == 0){
             char buffer[BUFFER_SIZE];
-            int char_read = mygetline(STDIN_FILENO, buffer, sizeof(buffer));
+            int handle_read = mygetline(STDIN_FILENO, buffer, sizeof(buffer));
 
             /* handling reading errors */
-            if(char_read <= 0){
-                print_error("Error occurred while reading from stdin!");
+            if(handle_read <= 0){
+                print_error("Error occurred while reading from stdin!\n");
             }
 
             /* parsing the line read */
             char* new_argv[ARGV_SIZE];
-            parse_buffer(buffer, new_argv);
+            int handle_parsing = parse_buffer(buffer, new_argv);
+
+            if(handle_parsing == -1) continue;
 
             if(strchr(new_argv[0], '/')){
                 execv(new_argv[0], new_argv);
@@ -43,10 +45,7 @@ int main(int argc, char* argv[]){
             /* TODO: understanding if it makes sense to use _exit*/
         }
         else{
-            /* TODO: remove this section */
             waitpid(new_pid, NULL, 0);
-            printf("\033[32m\nThis is the message from the parent process: pid = %d, new pid = %d\n\033[0m", getpid(), new_pid);
-            continue;
         }
     }
 }
