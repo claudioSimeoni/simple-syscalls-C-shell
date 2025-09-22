@@ -15,7 +15,7 @@ int parse_buffer(char* buff, char** argv){
     for(int i=1; i<ARGV_SIZE; i++){
         argv[i] = strtok(NULL, " ");
         if(argv[i] == NULL){
-            break;
+            return 1;
         }
         else if(check_redirection_char(argv[i])){
             char* new_stream = strtok(NULL, " ");
@@ -41,9 +41,9 @@ int parse_buffer(char* buff, char** argv){
                 change_error_stream(new_stream, 1);
             }
             argv[i] = NULL; 
-            return 1;
+            return -1;
         }
-        else if(argv[i] == "|"){
+        else if(!strcmp(argv[i], "|")){
             char* argv2[ARGV_SIZE];
             argv2[0] = strtok(NULL, " ");
 
@@ -60,8 +60,8 @@ int parse_buffer(char* buff, char** argv){
             }
                             
             argv[i] = NULL;
-
             execute_piping(argv, argv2);
+            return -1; 
         }
     }
 }
