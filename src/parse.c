@@ -8,14 +8,17 @@
 
 /* TODO: ADD A CHECK FOR END OF ARGV DIMENSION */
 
-/* returns 1 on success and -1 on error. */
+/* parse_buffer analyzes the content of the buffer and, according to its format,
+   calls the functions that runs the new process in the proper way. It returns -1
+   on error, -2 if other modules have already executed the command and 0 if the 
+   command needs to be executed. */
 int parse_buffer(char* buff, char** argv){
     argv[0] = strtok(buff, " ");
 
     for(int i=1; i<ARGV_SIZE; i++){
         argv[i] = strtok(NULL, " ");
         if(argv[i] == NULL){
-            return 1;
+            return 0;
         }
         else if(check_redirection_char(argv[i])){
             char* new_stream = strtok(NULL, " ");
@@ -41,7 +44,7 @@ int parse_buffer(char* buff, char** argv){
                 change_error_stream(new_stream, 1);
             }
             argv[i] = NULL; 
-            return -1;
+            return 0;
         }
         else if(!strcmp(argv[i], "|")){
             char* argv2[ARGV_SIZE];
@@ -61,7 +64,7 @@ int parse_buffer(char* buff, char** argv){
                             
             argv[i] = NULL;
             execute_piping(argv, argv2);
-            return -1; 
+            return -2; 
         }
     }
 }
