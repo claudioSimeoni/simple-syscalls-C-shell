@@ -1,9 +1,11 @@
 #include <unistd.h>
 #include <string.h>
 
+#include "../include/errors.h"
+
 /* this getline differently from the libc one removes the new line 
    since it is useless for our shell purposes */
-ssize_t mygetline(int fd, char* buff, size_t bytes){
+ssize_t my_getline(int fd, char* buff, size_t bytes){
     int handle = check_syscall(read(fd, buff, bytes), "read"); 
 
     /* EOF reached */
