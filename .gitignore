@@ -2,3 +2,6 @@
 todo.md
 /tests
 *.txt
+.history
+/build
+run_shell
