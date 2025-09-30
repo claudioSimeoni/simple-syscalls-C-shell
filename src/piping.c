@@ -1,7 +1,6 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <string.h>
-#include <stdio.h>
 
 #include "../include/errors.h"
 #include "../include/redirection.h"
@@ -11,6 +10,7 @@ int execute_piping(char* argv1[], char* argv2[]){
     int pipefd[2];
     check_syscall(pipe(pipefd), "pipe");
 
+    /* running the two processes and changing their streams */
     int new_pid1 = check_syscall(fork(), "fork");
     if(new_pid1 == 0){
         check_syscall(close(pipefd[0]), "close");
@@ -25,6 +25,7 @@ int execute_piping(char* argv1[], char* argv2[]){
         run_executable(argv2);
     }
     
+    /* closing both ends of the pipe and waiting the children */
     check_syscall(close(pipefd[0]), "close");
     check_syscall(close(pipefd[1]), "close");
     check_syscall(waitpid(new_pid1, NULL, 0), "waitpid");
