@@ -44,6 +44,22 @@ int parse_buffer(char* buff, char** argv, History* history, int pipefd[]){
     write_history(history);
 
     argv[0] = strtok(buff, " ");
+    if(argv[0] == NULL) _exit(0);
+
+    /* if argv[0] is not null it adds buff to the history */
+    push_history(history, buff);
+    write_history(history);
+
+    /* if argv[0] corresponds to one of the built_in commands then it concludes the parsing 
+       and sends the command to the built_in module's function `handle_command` */
+    if(check_command(argv[0])){
+        for(int i=1; i<ARGV_SIZE; i++){
+            argv[i] = strtok(NULL, " ");
+            if(argv[i] == NULL){
+                return handle_command(argv, history, pipefd);
+            }
+        }
+    }
 
 
     /* if argv[0] corresponds to one of the built_in commands then it concludes the parsing 

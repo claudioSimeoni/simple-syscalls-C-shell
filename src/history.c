@@ -2,7 +2,9 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include <libgen.h> /* this one contains dirname */
+
 
 #include "../include/history.h"
 #include "../include/constants.h"
