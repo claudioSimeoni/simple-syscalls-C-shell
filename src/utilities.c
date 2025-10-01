@@ -4,6 +4,8 @@
 #include "../include/errors.h"
 
 void run_executable(char* argv[]){
+    if (!argv || !argv[0]) my_perror("exec", "invalid argv");
+
     /* if the path is relative using execv otherwise using execvp */
     if(strchr(argv[0], '/')){
         execv(argv[0], argv);

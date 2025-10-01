@@ -34,7 +34,7 @@ int main(int argc, char* argv[]){
             History history; 
             init_history(&history);
             read_history(&history);
-
+            
             /* parsing the line read */
             char* new_argv[ARGV_SIZE];
             int handle_parsing = parse_buffer(buffer, new_argv, &history, pipefd);
@@ -44,7 +44,7 @@ int main(int argc, char* argv[]){
         }
         else{
             check_syscall(waitpid(new_pid, NULL, 0), "waitpid");
-            syscall(close(pipefd[1]), "close");
+            check_syscall(close(pipefd[1]), "close");
 
             /* looking for an eventual built_in command */
             my_getline(pipefd[0], buffer, BUFFER_SIZE);
@@ -56,7 +56,7 @@ int main(int argc, char* argv[]){
                 check_syscall_noexit(chdir(buffer), "chdir");
             }
 
-            syscall(close(pipefd[0]), "close");
+            check_syscall(close(pipefd[0]), "close");
         }
     }
 }

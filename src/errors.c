@@ -10,6 +10,8 @@ const char* error = "Error occurred with ";
    specific for system calls errors */
 
 void my_perror_noexit(const char* context, const char* message){
+    if(!context) context = "(null)";
+    if(!message) message = "(null)";
     write(STDERR_FILENO, pref, strlen(pref));
     write(STDERR_FILENO, error, strlen(error));
     write(STDERR_FILENO, context, strlen(context));

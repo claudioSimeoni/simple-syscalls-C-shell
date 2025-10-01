@@ -11,7 +11,7 @@ int check_redirection_char(char* arg){
 }
 
 void change_input_stream(char* new_stream){
-    int new_fd = check_syscall(open(new_stream, O_RDONLY | O_CREAT, 0644), "open");
+    int new_fd = check_syscall(open(new_stream, O_RDONLY, 0644), "open");
     check_syscall(dup2(new_fd, STDIN_FILENO), "dup2"); 
     check_syscall(close(new_fd), "close");
 }
